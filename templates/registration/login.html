@@ -1,0 +1,599 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="my-account-section">
+
+    <div class="container">
+         {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'error' %}
+                    <div class="alert alert-danger alert=dismissible fade show" role="alert">
+                        {{message}}
+                        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {%endif %}
+
+        <div class="row account-row">
+
+            <!-- =========================
+                 LOGIN
+            ========================== -->
+            <div class="col-lg-6 account-column">
+
+                <div class="account-form">
+
+                    <h2 class="account-form-title">Login</h2>
+
+
+
+                    <form action="{% url 'handlelogin' %}" method="post">
+
+                        {% csrf_token %}
+
+                        <!-- Username -->
+                        <div class="account-field">
+
+                            <label for="login_username">
+                                Username or email address
+                                <span class="required">*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                id="login_username"
+                                name="username"
+                                class="account-input"
+                                placeholder="Enter Username"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Password -->
+                        <div class="account-field">
+
+                            <label for="login_password">
+                                Password
+                                <span class="required">*</span>
+                            </label>
+
+                            <input
+                                type="password"
+                                id="login_password"
+                                name="password"
+                                class="account-input"
+                                placeholder="Enter password..."
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Remember / Forgot Password -->
+                        <div class="login-options">
+
+                            <div class="remember-me">
+
+                                <input
+                                    type="checkbox"
+                                    id="remember_me"
+                                    name="remember_me"
+                                >
+
+                                <label for="remember_me">
+                                    Remember me
+                                </label>
+
+                            </div>
+
+                            <a href="{% url 'password_reset' %}" class="forgot-password">
+                                Lost your password?
+                            </a>
+
+                        </div>
+
+
+                        <!-- Login Button -->
+                        <button
+                            type="submit"
+                            name="login"
+                            class="account-btn"
+                        >
+                            LOG IN
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 REGISTER
+            ========================== -->
+            <div class="col-lg-6 account-column">
+
+                <div class="account-form">
+
+                    <h2 class="account-form-title">Register</h2>
+
+                    <form action="{% url 'handleregister' %}"  method="post">
+
+                        {% csrf_token %}
+
+                        <!-- Username -->
+                        <div class="account-field">
+
+                            <label for="register_username">
+                                Username or email address
+                                <span class="required">*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                id="register_username"
+                                name="username"
+                                class="account-input"
+                                placeholder="Enter Username"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Email -->
+                        <div class="account-field">
+
+                            <label for="register_email">
+                                Email Address
+                                <span class="required">*</span>
+                            </label>
+
+                            <input
+                                type="email"
+                                id="register_email"
+                                name="email"
+                                class="account-input"
+                                placeholder="Email address..."
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Password -->
+                        <div class="account-field">
+
+                            <label for="register_password">
+                                Password
+                                <span class="required">*</span>
+                            </label>
+
+                            <input
+                                type="password"
+                                id="register_password"
+                                name="password"
+                                class="account-input"
+                                placeholder="Enter password..."
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Privacy -->
+                        <p class="privacy-text">
+                            Your personal data will be used to support your
+                            experience throughout this website, to manage
+                            access to your account, and for other purposes
+                            described in our
+                            <a href="#">privacy policy</a>.
+                        </p>
+
+
+                        <!-- Register Button -->
+                        <button
+                            type="submit"
+                            name="register"
+                            class="account-btn"
+                        >
+                            REGISTER
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<style>
+
+    /* =========================================
+       MAIN SECTION
+    ========================================= */
+
+    .my-account-section {
+        width: 100%;
+        background: #ffffff;
+
+        padding: 55px 0 75px;
+    }
+
+
+    .account-row {
+        margin-left: -22px;
+        margin-right: -22px;
+    }
+
+
+    .account-column {
+        padding-left: 22px;
+        padding-right: 22px;
+    }
+
+
+    /* =========================================
+       FORM
+    ========================================= */
+
+    .account-form {
+        width: 100%;
+    }
+
+
+    .account-form-title {
+        margin: 0 0 43px;
+
+        color: #222222;
+
+        font-size: 28px;
+        font-weight: 600;
+
+        line-height: 1.2;
+    }
+
+
+    /* =========================================
+       FORM FIELD
+    ========================================= */
+
+    .account-field {
+        margin-bottom: 34px;
+    }
+
+
+    .account-field label {
+        display: block;
+
+        margin-bottom: 9px;
+
+        color: #333333;
+
+        font-size: 16px;
+        font-weight: 400;
+
+        line-height: 1.4;
+    }
+
+
+    .required {
+        color: #d9534f;
+        font-weight: 500;
+    }
+
+
+    /* =========================================
+       INPUT
+    ========================================= */
+
+    .account-input {
+        display: block;
+
+        width: 100%;
+        height: 64px;
+
+        padding: 0 28px;
+
+        border: 1px solid #dedede;
+        border-radius: 0;
+
+        outline: none;
+
+        background: #ffffff;
+
+        color: #333333;
+
+        font-size: 16px;
+        font-weight: 400;
+
+        box-shadow: none;
+
+        transition: border-color 0.2s ease;
+    }
+
+
+    .account-input::placeholder {
+        color: #a6a6a6;
+        opacity: 1;
+    }
+
+
+    .account-input:focus {
+        border-color: #bdbdbd;
+
+        outline: none;
+
+        box-shadow: none;
+    }
+
+
+    /* =========================================
+       LOGIN OPTIONS
+    ========================================= */
+
+    .login-options {
+        display: flex;
+
+        align-items: center;
+        justify-content: space-between;
+
+        width: 100%;
+
+        margin-top: 1px;
+        margin-bottom: 34px;
+    }
+
+
+    .remember-me {
+        display: flex;
+
+        align-items: center;
+
+        gap: 11px;
+    }
+
+
+    .remember-me input {
+        width: 20px;
+        height: 20px;
+
+        margin: 0;
+
+        appearance: none;
+        -webkit-appearance: none;
+
+        border: 1px solid #aaa;
+        border-radius: 3px;
+
+        background: #ffffff;
+
+        cursor: pointer;
+    }
+
+
+    .remember-me input:checked {
+        position: relative;
+    }
+
+
+    .remember-me input:checked::after {
+        content: "✓";
+
+        position: absolute;
+
+        top: -3px;
+        left: 3px;
+
+        color: #333333;
+
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+
+    .remember-me label {
+        margin: 0;
+
+        color: #333333;
+
+        font-size: 16px;
+        font-weight: 400;
+
+        cursor: pointer;
+    }
+
+
+    .forgot-password {
+        color: #2874b2;
+
+        font-size: 16px;
+        font-weight: 500;
+
+        text-decoration: none;
+
+        transition: color 0.2s ease;
+    }
+
+
+    .forgot-password:hover {
+        color: #1b5d91;
+
+        text-decoration: none;
+    }
+
+
+    /* =========================================
+       PRIVACY TEXT
+    ========================================= */
+
+    .privacy-text {
+        margin: -1px 0 39px;
+
+        color: #555555;
+
+        font-size: 16px;
+        font-weight: 400;
+
+        line-height: 1.65;
+    }
+
+
+    .privacy-text a {
+        color: #555555;
+
+        font-style: italic;
+
+        text-decoration: underline;
+    }
+
+
+    /* =========================================
+       BUTTON
+    ========================================= */
+
+    .account-btn {
+        display: block;
+
+        width: 100%;
+        height: 64px;
+
+        padding: 0;
+
+        border: none;
+        border-radius: 0;
+
+        background: #ffb400;
+
+        color: #222222;
+
+        font-size: 16px;
+        font-weight: 700;
+
+        line-height: 64px;
+        text-align: center;
+
+        cursor: pointer;
+
+        transition: background-color 0.2s ease;
+    }
+
+
+    .account-btn:hover {
+        background: #f2a900;
+
+        color: #222222;
+    }
+
+
+    .account-btn:focus {
+        outline: none;
+
+        background: #f2a900;
+
+        color: #222222;
+
+        box-shadow: none;
+    }
+
+
+    /* =========================================
+       TABLET
+    ========================================= */
+
+    @media (max-width: 991px) {
+
+        .my-account-section {
+            padding: 50px 0 65px;
+        }
+
+        .account-row {
+            margin-left: -15px;
+            margin-right: -15px;
+        }
+
+        .account-column {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .account-form-title {
+            margin-bottom: 35px;
+        }
+
+    }
+
+
+    /* =========================================
+       MOBILE
+    ========================================= */
+
+    @media (max-width: 767px) {
+
+        .my-account-section {
+            padding: 40px 0 50px;
+        }
+
+        .account-column {
+            margin-bottom: 50px;
+        }
+
+        .account-column:last-child {
+            margin-bottom: 0;
+        }
+
+        .account-form-title {
+            margin-bottom: 30px;
+
+            font-size: 26px;
+        }
+
+        .account-field {
+            margin-bottom: 28px;
+        }
+
+        .account-input {
+            height: 58px;
+
+            padding: 0 18px;
+        }
+
+        .login-options {
+            align-items: flex-start;
+
+            flex-direction: column;
+
+            gap: 18px;
+        }
+
+        .account-btn {
+            height: 58px;
+
+            line-height: 58px;
+        }
+
+        .privacy-text {
+            margin-bottom: 30px;
+
+            font-size: 15px;
+        }
+
+    }
+
+</style>
+
+{% endblock content %}

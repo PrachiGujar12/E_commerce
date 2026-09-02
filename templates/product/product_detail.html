@@ -1,0 +1,1483 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+    {{ product.product_name }}
+{% endblock title %}
+
+
+{% block extra_css %}
+
+<style>
+
+    /* =========================================================
+       PRODUCT PAGE
+    ========================================================= */
+
+    .product-page {
+        position: relative;
+    }
+
+
+    .product-page .product-title {
+        color: #0759a5 !important;
+    }
+
+
+    /* =========================================================
+       PRODUCT GALLERY
+    ========================================================= */
+
+    .product-page .product-thumb {
+        width: 100%;
+
+        height: 115px;
+
+        flex-shrink: 0;
+
+        cursor: pointer;
+
+        transition:
+            all 0.2s ease;
+    }
+
+
+    .product-page .product-thumb:hover,
+    .product-page .product-thumb.active {
+        border-color: #f4c400 !important;
+
+        box-shadow:
+            0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+
+    .product-page .main-product-image {
+        height: 570px;
+
+        overflow: hidden;
+
+        position: relative;
+
+        z-index: 1;
+    }
+
+
+    .product-page .main-product-image img {
+        transition:
+            opacity 0.2s ease;
+    }
+
+
+    .product-page .object-fit-contain {
+        object-fit: contain;
+    }
+
+
+    /* =========================================================
+       TABS
+    ========================================================= */
+
+    .product-page .nav-tabs .nav-link {
+        color: #999999;
+
+        border: 0;
+
+        border-bottom: 3px solid transparent;
+
+        border-radius: 0;
+
+        padding-left: 0;
+
+        padding-right: 0;
+
+        margin-right: 45px;
+
+        font-size: 18px;
+    }
+
+
+    .product-page .nav-tabs .nav-link:hover {
+        color: #222222;
+
+        border-color: transparent;
+    }
+
+
+    .product-page .nav-tabs .nav-link.active {
+        color: #222222;
+
+        background: transparent;
+
+        border-color:
+            transparent
+            transparent
+            #f5c400;
+    }
+
+
+    /* =========================================================
+       ADD TO CART
+    ========================================================= */
+
+    .product-page .btn-warning {
+        background-color: #ffb900;
+
+        border-color: #ffb900;
+
+        color: #222222;
+    }
+
+
+    .product-page .btn-warning:hover {
+        background-color: #e9a900;
+
+        border-color: #e9a900;
+
+        color: #222222;
+    }
+
+
+    .product-page .btn-warning:disabled {
+        background-color: #dddddd;
+
+        border-color: #dddddd;
+
+        color: #888888;
+    }
+
+
+    /* =========================================================
+       QUANTITY
+    ========================================================= */
+
+    .product-page #quantity::-webkit-outer-spin-button,
+    .product-page #quantity::-webkit-inner-spin-button {
+
+        -webkit-appearance: none;
+
+        margin: 0;
+    }
+
+
+    .product-page #quantity[type="number"] {
+
+        -moz-appearance: textfield;
+    }
+
+
+    /* =========================================================
+       ADDITIONAL INFORMATION
+    ========================================================= */
+
+    .product-page .additional-information {
+        width: 100%;
+    }
+
+
+    /* =========================================================
+       MOBILE
+    ========================================================= */
+
+    @media (max-width: 767.98px) {
+
+        .product-page .main-product-image {
+            height: 350px;
+        }
+
+
+        .product-page .product-thumb {
+            width: 90px;
+
+            height: 80px;
+        }
+
+
+        .product-page .nav-tabs {
+            flex-wrap: nowrap;
+
+            overflow-x: auto;
+        }
+
+
+        .product-page .nav-tabs .nav-link {
+            white-space: nowrap;
+
+            margin-right: 25px;
+        }
+
+    }
+
+
+    /* =========================================================
+       TABLET
+    ========================================================= */
+
+    @media (
+        min-width: 768px
+    ) and (
+        max-width: 991.98px
+    ) {
+
+        .product-page .main-product-image {
+            height: 450px;
+        }
+
+    }
+
+</style>
+
+{% endblock extra_css %}
+
+
+
+{% block content %}
+
+<div class="product-page">
+
+    <div class="container py-4">
+
+
+        <!-- =====================================================
+             BREADCRUMB
+        ====================================================== -->
+
+        <nav
+            aria-label="breadcrumb"
+            class="mb-5"
+        >
+
+            <ol class="breadcrumb small mb-0">
+
+                <li class="breadcrumb-item">
+
+                    <a
+                        href="{% url 'home' %}"
+                        class="text-secondary text-decoration-none"
+                    >
+                        Home
+                    </a>
+
+                </li>
+
+
+                <li class="breadcrumb-item">
+
+                    <a
+                        href="#"
+                        class="text-secondary text-decoration-none"
+                    >
+                        Shop
+                    </a>
+
+                </li>
+
+
+                <li
+                    class="breadcrumb-item active text-secondary"
+                    aria-current="page"
+                >
+                    {{ product.product_name }}
+                </li>
+
+            </ol>
+
+        </nav>
+
+
+
+        <!-- =====================================================
+             PRODUCT
+        ====================================================== -->
+
+        <div class="row g-5">
+
+
+            <!-- =================================================
+                 LEFT: PRODUCT GALLERY
+            ================================================== -->
+
+            <div class="col-lg-6">
+
+                <div class="row g-3">
+
+
+                    <!-- =========================================
+                         THUMBNAILS
+                    ========================================== -->
+
+                    <div class="col-12 col-md-3 order-2 order-md-1">
+
+                        <div
+                            class="
+                                product-thumbnails
+                                d-flex
+                                flex-row
+                                flex-md-column
+                                gap-2
+                                overflow-auto
+                            "
+                        >
+
+                            {% if product.featured_image %}
+
+                                <button
+                                    type="button"
+                                    class="
+                                        product-thumb
+                                        active
+                                        border
+                                        rounded
+                                        bg-white
+                                        p-2
+                                    "
+                                    data-image="{{ product.featured_image }}"
+                                    aria-label="View product image"
+                                >
+
+                                    <img
+                                        src="{{ product.featured_image }}"
+                                        alt="{{ product.product_name }}"
+                                        class="
+                                            img-fluid
+                                            w-100
+                                            h-100
+                                            object-fit-contain
+                                        "
+                                    >
+
+                                </button>
+
+                            {% endif %}
+
+
+                            {% for image in product.product_image_set.all %}
+
+                                <button
+                                    type="button"
+                                    class="
+                                        product-thumb
+                                        border
+                                        rounded
+                                        bg-white
+                                        p-2
+                                    "
+                                    data-image="{{ image.Image_url }}"
+                                    aria-label="View product image"
+                                >
+
+                                    <img
+                                        src="{{ image.Image_url }}"
+                                        alt="{{ product.product_name }}"
+                                        class="
+                                            img-fluid
+                                            w-100
+                                            h-100
+                                            object-fit-contain
+                                        "
+                                        loading="lazy"
+                                    >
+
+                                </button>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         MAIN IMAGE
+                    ========================================== -->
+
+                    <div class="col-12 col-md-9 order-1 order-md-2">
+
+                        <div
+                            class="
+                                main-product-image
+                                d-flex
+                                align-items-center
+                                justify-content-center
+                                bg-white
+                                rounded
+                            "
+                        >
+
+                            {% if product.featured_image %}
+
+                                <img
+                                    id="mainProductImage"
+                                    src="{{ product.featured_image }}"
+                                    alt="{{ product.product_name }}"
+                                    class="
+                                        img-fluid
+                                        w-100
+                                        h-100
+                                        object-fit-contain
+                                    "
+                                >
+
+                            {% elif product.product_image_set.all %}
+
+                                {% with first_image=product.product_image_set.all|first %}
+
+                                    <img
+                                        id="mainProductImage"
+                                        src="{{ first_image.Image_url }}"
+                                        alt="{{ product.product_name }}"
+                                        class="
+                                            img-fluid
+                                            w-100
+                                            h-100
+                                            object-fit-contain
+                                        "
+                                    >
+
+                                {% endwith %}
+
+                            {% else %}
+
+                                <img
+                                    id="mainProductImage"
+                                    src="{% static 'images/no-image.png' %}"
+                                    alt="No image available"
+                                    class="
+                                        img-fluid
+                                        w-100
+                                        h-100
+                                        object-fit-contain
+                                    "
+                                >
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 RIGHT: PRODUCT DETAILS
+            ================================================== -->
+
+            <div class="col-lg-6">
+
+
+                <!-- Product Name -->
+
+                <h1
+                    class="
+                        product-title
+                        fs-3
+                        fw-semibold
+                        mb-3
+                    "
+                >
+                    {{ product.product_name }}
+                </h1>
+
+
+
+                <!-- Rating -->
+
+                <div
+                    class="
+                        d-flex
+                        align-items-center
+                        flex-wrap
+                        gap-2
+                        mb-3
+                    "
+                >
+
+                    <div class="text-warning fs-4 lh-1">
+                        ☆ ☆ ☆ ☆ ☆
+                    </div>
+
+
+                    <span class="text-secondary">
+                        |
+                    </span>
+
+
+                    <a
+                        href="#reviews"
+                        class="
+                            small
+                            text-secondary
+                            text-decoration-none
+                        "
+                        onclick="openReviewsTab(event)"
+                    >
+
+                        ({{ product.reviews.count }}
+                        review{{ product.reviews.count|pluralize }})
+
+                    </a>
+
+
+                    <span class="text-secondary">
+                        |
+                    </span>
+
+
+                    <a
+                        href="#reviews"
+                        class="
+                            small
+                            text-secondary
+                            text-decoration-none
+                        "
+                        onclick="openReviewsTab(event)"
+                    >
+                        Add your review
+                    </a>
+
+                </div>
+
+
+
+                <!-- Price -->
+
+                <div
+                    class="
+                        fs-2
+                        fw-semibold
+                        text-dark
+                        mb-4
+                    "
+                >
+                    ${{ product.price }}
+                </div>
+
+
+                <hr class="my-4">
+
+
+
+                <!-- Product Information -->
+
+                <p class="ps-4 mb-4">
+
+                    {{ product.Product_Information|safe }}
+
+                </p>
+
+
+
+                <!-- Availability -->
+
+                <div class="mb-4">
+
+                    <strong class="text-dark">
+                        Availability:
+                    </strong>
+
+                    <span class="ms-2 text-info">
+                        {{ product.Availability }} in stock
+                    </span>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     ADD TO CART
+                ================================================== -->
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+
+                    <div class="row g-3 mb-4">
+
+
+                        <!-- Quantity -->
+
+                        <div class="col-12 col-md-6">
+
+                            <div class="input-group input-group-lg">
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-secondary"
+                                    onclick="decreaseQuantity()"
+                                    {% if product.stock <= 0 %}
+                                        disabled
+                                    {% endif %}
+                                >
+                                    −
+                                </button>
+
+
+                                <input
+                                    type="number"
+                                    id="quantity"
+                                    name="quantity"
+                                    value="1"
+                                    min="1"
+                                    max="{{ product.stock }}"
+                                    class="form-control text-center"
+                                    {% if product.stock <= 0 %}
+                                        disabled
+                                    {% endif %}
+                                    aria-label="Product quantity"
+                                >
+
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-secondary"
+                                    onclick="increaseQuantity()"
+                                    {% if product.stock <= 0 %}
+                                        disabled
+                                    {% endif %}
+                                >
+                                    +
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Add Cart -->
+
+                        <div class="col-12 col-md-6">
+
+                            <button
+                                type="submit"
+                                class="
+                                    btn
+                                    btn-warning
+                                    btn-lg
+                                    fw-bold
+                                    w-100
+                                    h-100
+                                "
+                                {% if product.stock <= 0 %}
+                                    disabled
+                                {% endif %}
+                            >
+
+                                {% if product.stock > 0 %}
+
+                                    ADD TO CART
+
+                                {% else %}
+
+                                    OUT OF STOCK
+
+                                {% endif %}
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+
+
+                <!-- =================================================
+                     ACTIONS
+                ================================================== -->
+
+                <div
+                    class="
+                        d-flex
+                        flex-wrap
+                        justify-content-between
+                        align-items-center
+                        gap-3
+                        py-3
+                        mb-3
+                        border-bottom
+                    "
+                >
+
+                    <div class="d-flex flex-wrap gap-4">
+
+                        <button
+                            type="button"
+                            class="
+                                btn
+                                btn-link
+                                text-secondary
+                                text-decoration-none
+                                p-0
+                            "
+                        >
+
+                            <i class="bi bi-heart me-1"></i>
+
+                            Add to wishlist
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="
+                                btn
+                                btn-link
+                                text-secondary
+                                text-decoration-none
+                                p-0
+                            "
+                        >
+
+                            <i class="bi bi-layers me-1"></i>
+
+                            Compare
+
+                        </button>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="
+                            btn
+                            btn-link
+                            text-secondary
+                            text-decoration-none
+                            p-0
+                        "
+                        onclick="shareProduct()"
+                    >
+
+                        <i class="bi bi-share me-1"></i>
+
+                        Share
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     PRODUCT META
+                ================================================== -->
+
+                <div class="pt-3">
+
+
+                    <div class="row mb-3">
+
+                        <div class="col-sm-3 fw-semibold text-dark">
+                            Model Name:
+                        </div>
+
+                        <div class="col-sm-9 text-secondary">
+                            {{ product.model_Name }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="row mb-3">
+
+                        <div class="col-sm-3 fw-semibold text-dark">
+                            Categories:
+                        </div>
+
+                        <div class="col-sm-9">
+
+                            <a
+                                href="#"
+                                class="
+                                    text-secondary
+                                    text-decoration-none
+                                "
+                            >
+                                {{ product.Categories }}
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row mb-3">
+
+                        <div class="col-sm-3 fw-semibold text-dark">
+                            Tags:
+                        </div>
+
+                        <div class="col-sm-9">
+
+                            <a
+                                href="#"
+                                class="
+                                    text-secondary
+                                    text-decoration-none
+                                "
+                            >
+                                {{ product.Tags }}
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             DESCRIPTION / INFO / REVIEWS
+        ====================================================== -->
+
+        <section
+            class="
+                mt-5
+                pt-4
+                mb-5
+            "
+        >
+
+
+            <!-- Tabs -->
+
+            <ul
+                class="nav nav-tabs"
+                id="productTabs"
+                role="tablist"
+            >
+
+                <li
+                    class="nav-item"
+                    role="presentation"
+                >
+
+                    <button
+                        class="nav-link active"
+                        id="description-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#description"
+                        type="button"
+                        role="tab"
+                    >
+                        Description
+                    </button>
+
+                </li>
+
+
+                <li
+                    class="nav-item"
+                    role="presentation"
+                >
+
+                    <button
+                        class="nav-link"
+                        id="additional-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#additional"
+                        type="button"
+                        role="tab"
+                    >
+                        Additional information
+                    </button>
+
+                </li>
+
+
+                <li
+                    class="nav-item"
+                    role="presentation"
+                >
+
+                    <button
+                        class="nav-link"
+                        id="reviews-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#reviews-panel"
+                        type="button"
+                        role="tab"
+                    >
+                        Reviews ({{ product.reviews.count }})
+                    </button>
+
+                </li>
+
+            </ul>
+
+
+
+            <!-- Tab Content -->
+
+            <div
+                class="tab-content pt-4"
+                id="productTabsContent"
+            >
+
+
+                <!-- Description -->
+
+                <div
+                    class="
+                        tab-pane
+                        fade
+                        show
+                        active
+                        text-secondary
+                        lh-lg
+                    "
+                    id="description"
+                    role="tabpanel"
+                    aria-labelledby="description-tab"
+                >
+
+                    {{ product.Description|safe }}
+
+                </div>
+
+
+
+                <!-- Additional Information -->
+
+                <div
+                    class="
+                        tab-pane
+                        fade
+                        text-secondary
+                    "
+                    id="additional"
+                    role="tabpanel"
+                    aria-labelledby="additional-tab"
+                >
+
+                    <div class="additional-information">
+
+
+                        <div class="row bg-secondary text-white py-2">
+
+                            <div class="col-md-6">
+                                <strong>
+                                    SPECIFICATION
+                                </strong>
+                            </div>
+
+                            <div class="col-md-6">
+                                <strong>
+                                    DETAILS
+                                </strong>
+                            </div>
+
+                        </div>
+
+
+                        {% for i in product.additional_information_set.all %}
+
+                            <div class="row py-2 border-bottom">
+
+                                <div class="col-md-6">
+                                    {{ i.specification }}
+                                </div>
+
+                                <div class="col-md-6">
+                                    {{ i.details }}
+                                </div>
+
+                            </div>
+
+                        {% empty %}
+
+                            <div class="row py-3">
+
+                                <div class="col-12 text-muted">
+                                    No additional information available.
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Reviews -->
+
+                <div
+                    class="tab-pane fade"
+                    id="reviews-panel"
+                    role="tabpanel"
+                    aria-labelledby="reviews-tab"
+                >
+
+                    {% if product.reviews.count > 0 %}
+
+                        {% for review in product.reviews.all %}
+
+                            <div class="border-bottom py-4">
+
+                                <div>
+
+                                    <span class="fw-semibold text-dark">
+                                        {{ review.user }}
+                                    </span>
+
+
+                                    {% if review.created_at %}
+
+                                        <small
+                                            class="
+                                                text-secondary
+                                                ms-2
+                                            "
+                                        >
+                                            {{ review.created_at|date:"M d, Y" }}
+                                        </small>
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                {% if review.rating %}
+
+                                    <div class="text-warning my-2">
+
+                                        {% for i in "12345" %}
+
+                                            {% if forloop.counter <= review.rating %}
+                                                ★
+                                            {% else %}
+                                                ☆
+                                            {% endif %}
+
+                                        {% endfor %}
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                {% if review.comment %}
+
+                                    <p class="text-secondary mb-0">
+                                        {{ review.comment }}
+                                    </p>
+
+                                {% endif %}
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <p class="text-secondary">
+                            There are no reviews yet.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+
+{% endblock content %}
+
+
+
+{% block extra_js %}
+
+<script>
+
+    /* =========================================================
+       PRODUCT IMAGE GALLERY
+    ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const mainImage =
+                document.getElementById(
+                    "mainProductImage"
+                );
+
+
+            const thumbnails =
+                document.querySelectorAll(
+                    ".product-page .product-thumb"
+                );
+
+
+            if (
+                !mainImage ||
+                !thumbnails.length
+            ) {
+                return;
+            }
+
+
+            thumbnails.forEach(
+                function (thumbnail) {
+
+                    thumbnail.addEventListener(
+                        "click",
+                        function () {
+
+                            const imageUrl =
+                                this.dataset.image;
+
+
+                            if (!imageUrl) {
+                                return;
+                            }
+
+
+                            mainImage.style.opacity =
+                                "0.4";
+
+
+                            mainImage.src =
+                                imageUrl;
+
+
+                            mainImage.onload =
+                                function () {
+
+                                    mainImage.style.opacity =
+                                        "1";
+
+                                };
+
+
+                            thumbnails.forEach(
+                                function (item) {
+
+                                    item.classList.remove(
+                                        "active"
+                                    );
+
+                                }
+                            );
+
+
+                            this.classList.add(
+                                "active"
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+
+    /* =========================================================
+       QUANTITY VALIDATION
+    ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const quantity =
+                document.getElementById(
+                    "quantity"
+                );
+
+
+            if (!quantity) {
+                return;
+            }
+
+
+            quantity.addEventListener(
+                "change",
+                function () {
+
+                    let value =
+                        parseInt(
+                            this.value,
+                            10
+                        ) || 1;
+
+
+                    const min =
+                        parseInt(
+                            this.min,
+                            10
+                        ) || 1;
+
+
+                    const max =
+                        parseInt(
+                            this.max,
+                            10
+                        ) || 999999;
+
+
+                    if (value < min) {
+                        value = min;
+                    }
+
+
+                    if (value > max) {
+                        value = max;
+                    }
+
+
+                    this.value = value;
+
+                }
+            );
+
+        }
+    );
+
+
+
+    /* =========================================================
+       INCREASE QUANTITY
+    ========================================================= */
+
+    function increaseQuantity() {
+
+        const quantity =
+            document.getElementById(
+                "quantity"
+            );
+
+
+        if (
+            !quantity ||
+            quantity.disabled
+        ) {
+            return;
+        }
+
+
+        const max =
+            parseInt(
+                quantity.max,
+                10
+            ) || 999999;
+
+
+        let value =
+            parseInt(
+                quantity.value,
+                10
+            ) || 1;
+
+
+        if (value < max) {
+
+            quantity.value =
+                value + 1;
+
+        }
+
+    }
+
+
+
+    /* =========================================================
+       DECREASE QUANTITY
+    ========================================================= */
+
+    function decreaseQuantity() {
+
+        const quantity =
+            document.getElementById(
+                "quantity"
+            );
+
+
+        if (
+            !quantity ||
+            quantity.disabled
+        ) {
+            return;
+        }
+
+
+        let value =
+            parseInt(
+                quantity.value,
+                10
+            ) || 1;
+
+
+        if (value > 1) {
+
+            quantity.value =
+                value - 1;
+
+        }
+
+    }
+
+
+
+    /* =========================================================
+       OPEN REVIEWS TAB
+    ========================================================= */
+
+    function openReviewsTab(event) {
+
+        if (event) {
+            event.preventDefault();
+        }
+
+
+        const reviewTab =
+            document.getElementById(
+                "reviews-tab"
+            );
+
+
+        if (reviewTab) {
+
+            const tab =
+                new bootstrap.Tab(
+                    reviewTab
+                );
+
+
+            tab.show();
+
+        }
+
+
+        const section =
+            document.querySelector(
+                ".product-page .tab-content"
+            );
+
+
+        if (section) {
+
+            setTimeout(
+                function () {
+
+                    section.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+
+                },
+                100
+            );
+
+        }
+
+    }
+
+
+
+    /* =========================================================
+       SHARE PRODUCT
+    ========================================================= */
+
+    function shareProduct() {
+
+        const shareData = {
+
+            title:
+                "{{ product.product_name|escapejs }}",
+
+            text:
+                "{{ product.product_name|escapejs }}",
+
+            url:
+                window.location.href
+
+        };
+
+
+        if (
+            navigator.share &&
+            typeof navigator.share === "function"
+        ) {
+
+            navigator
+                .share(shareData)
+                .catch(
+                    function () {
+                        // User cancelled sharing.
+                    }
+                );
+
+        }
+
+        else if (
+            navigator.clipboard
+        ) {
+
+            navigator.clipboard
+                .writeText(
+                    window.location.href
+                )
+
+                .then(
+                    function () {
+
+                        alert(
+                            "Product link copied to clipboard."
+                        );
+
+                    }
+                )
+
+                .catch(
+                    function () {
+
+                        alert(
+                            "Unable to copy product link."
+                        );
+
+                    }
+                );
+
+        }
+
+        else {
+
+            alert(
+                "Unable to copy product link."
+            );
+
+        }
+
+    }
+
+</script>
+
+{% endblock extra_js %}

@@ -1,0 +1,121 @@
+ <div class="header-actions">
+                    {% if user.is_authenticated %}
+                        <!-- Account -->
+                           <a href="#" class="header-action">
+
+                            <div class="action-icon">
+                                <i class="bi bi-person"></i>
+                            </div>
+
+                            <div class="action-info">
+                                <a class="icon-link" href="{% url 'handleprofile' %}">
+                                    <strong>Logout</strong>
+                                    <strong>My Profile</strong>
+                                </a>
+                            </div>
+                        </a>
+                    {% else %}
+                           <a href="#" class="header-action">
+
+                            <div class="action-icon">
+                                <i class="bi bi-person"></i>
+                            </div>
+
+                            <div class="action-info">
+                                <a class="icon-link" href="{% url 'login' %}">
+                                    <strong>Login</strong>
+                                    <strong>My Account</strong>
+                                </a>
+                            </div>
+                        </a>
+                    {%endif %}
+
+                    <!-- Wishlist -->
+                    <a href="#" class="header-action">
+
+                        <div class="action-icon action-icon-badge">
+
+                            <i class="bi bi-heart"></i>
+
+                            <span class="action-badge">
+                                0
+                            </span>
+
+                        </div>
+
+                        <div class="action-info">
+                            <small>Favorite</small>
+                            <strong>My Wishlist</strong>
+                        </div>
+
+                    </a>
+
+
+                    <!-- Cart -->
+                    <a href="#" class="header-action">
+
+                        <div class="action-icon action-icon-badge">
+
+                            <i class="bi bi-bag"></i>
+
+                            <span class="action-badge">
+                                {{request.session.cart|length}}
+                            </span>
+
+                        </div>
+
+<!--                        <div class="action-info">-->
+<!--                            <small>Your Cart</small>-->
+<!--                            <strong>$00.00</strong>-->
+<!--                        </div>-->
+
+                        <div class="dropdown cart-dropdown">
+                              <!-- Trigger Element -->
+                              <a href="#" class="action-info text-decoration-none" role="button">
+                                <span class="text-white">Your Cart</span>
+<!--                                <strong class="">₹{{cart_total_amount}}</strong>-->
+                              </a>
+
+                              <!-- Dropdown Menu -->
+                              <div class="dropdown-menu dropdown-menu-start p-3 shadow-sm cart-menu">
+                                <!-- Header -->
+                                <div class="d-flex align-items-baseline justify-content-between pb-2 border-bottom mb-3">
+                                  <h6 class="fw-bold mb-0">Your Cart</h6>
+                                  <small class="text-muted">({{request.session.cart|length}} Item in Cart)</small>
+                                </div>
+
+                                  {% for key,value in request.session.cart.items %}
+                                    <!-- Cart Item -->
+                                    <div class="d-flex align-items-center mb-3">
+                                      <img src="{{value.featured_image}}" alt="Product" class="rounded me-3 object-fit-cover" width="60" height="60">
+                                      <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                          <p class="mb-1 fw-semibold small lh-sm text-dark">
+                                              {{value.product_name}}
+                                          </p>
+                                          <a href="{% url 'item_clear' key %}" type="button" class="btn-close btn-sm ms-2" aria-label="Remove"></a>
+                                        </div>
+                                        <span class="fw-bold text-warning d-block me-2">₹{{value.price}}</span>
+                                      </div>
+                                    </div>
+                                  {% endfor %}
+
+                                <hr class="my-3">
+
+                                <!-- Subtotal -->
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                  <span class="fw-bold text-secondary">Subtotal</span>
+                                  <span class="fw-bold text-warning">₹{{ cart_total_amount|floatformat:2 }}</span>
+                                </div>
+
+                                <!-- Buttons -->
+                                <div class="d-grid gap-2">
+                                  <a href="{% url 'cart_detail' %}" class="btn btn-warning text-white fw-bold">View cart</a>
+                                  <a href="#" class="btn btn-outline-secondary text-uppercase fw-semibold btn-sm py-2">Checkout</a>
+                                </div>
+                              </div>
+                            </div>
+
+                    </a>
+
+                </div>

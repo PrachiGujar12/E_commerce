@@ -1,0 +1,386 @@
+<header class="site-header sticky-top">
+
+    <!-- =====================================================
+         TOP INFORMATION BAR
+    ====================================================== -->
+    <div class="top-header">
+        <div class="container-fluid px-4 px-lg-5">
+
+            <div class="top-header-inner">
+
+                <!-- Left Information -->
+                <div class="top-left">
+                    {% if user.is_authenticated %}
+                    <p>Welcome
+                        {% if user.first_name == "" %}
+                            {{user.email}}
+                        {% else %}
+                            {{user.first_name}} {{user.last_name}}
+                        {% endif %}
+                    </p>
+                    {% else %}
+                    <p> Please do Login First...</p>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Right Information -->
+                <div class="top-right">
+
+                    <a href="#" class="top-link">
+                        About Us
+                    </a>
+
+                    <a href="#" class="top-link">
+                        Order Tracking
+                    </a>
+
+                    <a href="#" class="top-link">
+                        Contact Us
+                    </a>
+
+                    <a href="#" class="top-link">
+                        FAQs
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- =====================================================
+         MAIN HEADER
+    ====================================================== -->
+    <div class="main-header">
+
+        <div class="container-fluid px-3 px-lg-5">
+
+            <div class="main-header-inner">
+
+                <!-- =================================================
+                     LOGO
+                ================================================== -->
+                <a href="/" class="brand-logo">
+
+                    <span class="brand-icon">
+                        <i class="bi bi-bag-heart-fill"></i>
+                    </span>
+
+                    <span class="brand-text">
+                        Shop<span>Ease</span>
+                    </span>
+
+                </a>
+
+
+                <!-- =================================================
+                     SEARCH AREA
+                ================================================== -->
+                <div class="search-wrapper">
+
+                    <div class="search-box">
+
+                        <!-- Category -->
+                        <button
+                            type="button"
+                            class="search-category"
+                        >
+                            <span>
+                                <i class="bi bi-grid-3x3-gap me-2"></i>
+                                All Categories
+                            </span>
+
+                            <i class="bi bi-chevron-down"></i>
+                        </button>
+
+
+                        <!-- Search Input -->
+                        <input
+                            type="text"
+                            class="search-input"
+                            placeholder="I'm shopping for..."
+                            aria-label="Search products"
+                        >
+
+
+                        <!-- Search Button -->
+                        <button
+                            type="button"
+                            class="search-button"
+                            aria-label="Search"
+                        >
+                            <i class="bi bi-search"></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     HEADER ACTIONS
+                ================================================== -->
+                {% include 'includes/modal.html' %}
+
+                <!-- Mobile Menu Button -->
+                <button
+                    type="button"
+                    class="mobile-menu-button"
+                    id="mobileMenuButton"
+                    aria-label="Toggle menu"
+                >
+                    <i class="bi bi-list"></i>
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         NAVIGATION BAR
+    ====================================================== -->
+    <div class="navigation-bar">
+
+        <div class="container-fluid px-3 px-lg-5">
+
+            <div class="navigation-inner">
+
+
+                <!-- =================================================
+                     SHOP BY DEPARTMENT
+                ================================================== -->
+                <div class="department-wrapper">
+
+                    <button
+                        type="button"
+                        id="deptDropdownBtn"
+                        class="department-button"
+                        aria-expanded="false"
+                    >
+
+                        <span class="department-button-left">
+
+                            <i class="bi bi-list"></i>
+
+                            <span>
+                                SHOP BY DEPARTMENT
+                            </span>
+
+                        </span>
+
+                        <i
+                            class="bi bi-chevron-down department-arrow"
+                            id="departmentArrow"
+                        ></i>
+
+                    </button>
+
+
+                    <!-- =================================================
+                         DEPARTMENT DROPDOWN
+                         HIDDEN BY DEFAULT
+                    ================================================== -->
+                    <div
+                        id="deptMenu"
+                        class="department-menu"
+                    >
+
+                        <div class="department-menu-inner">
+
+                            {% for main_cat in main_category %}
+
+                            <div class="department-item">
+
+                                <!-- Main Category -->
+                                <a
+                                    href="#"
+                                    class="department-item-link"
+                                >
+
+                                    <span class="department-item-name">
+
+                                        <span class="department-category-icon">
+                                            <i class="bi bi-grid"></i>
+                                        </span>
+
+                                        {{ main_cat.name }}
+
+                                    </span>
+
+                                    <i class="bi bi-chevron-right"></i>
+
+                                </a>
+
+
+                                <!-- =================================================
+                                     MEGA MENU
+                                ================================================== -->
+                                <div class="mega-menu">
+
+                                    <div class="mega-menu-header">
+
+                                        <span>
+                                            {{ main_cat.name }}
+                                        </span>
+
+                                        <small>
+                                            Explore Categories
+                                        </small>
+
+                                    </div>
+
+
+                                    <div class="mega-menu-body">
+
+                                        <div class="row g-4">
+
+                                            {% for cat in main_cat.categories.all %}
+
+                                            <div class="col-md-6 col-lg-4">
+
+                                                <div class="mega-category">
+
+                                                    <h6 class="mega-category-title">
+
+                                                        <span class="mega-title-icon">
+                                                            <i class="bi bi-chevron-right"></i>
+                                                        </span>
+
+                                                        {{ cat.name }}
+
+                                                    </h6>
+
+
+                                                    <ul class="mega-subcategory-list">
+
+                                                        {% for sub_cat in cat.subcategories.all %}
+
+                                                        <li>
+
+                                                            <a
+                                                                href="#"
+                                                                class="mega-subcategory-link"
+                                                            >
+                                                                {{ sub_cat.name }}
+
+                                                                <i class="bi bi-arrow-right"></i>
+                                                            </a>
+
+                                                        </li>
+
+                                                        {% empty %}
+
+                                                        <li>
+                                                            <span class="no-subcategory">
+                                                                No subcategories available
+                                                            </span>
+                                                        </li>
+
+                                                        {% endfor %}
+
+                                                    </ul>
+
+                                                </div>
+
+                                            </div>
+
+                                            {% empty %}
+
+                                            <div class="col-12">
+
+                                                <div class="empty-category">
+                                                    No categories available
+                                                </div>
+
+                                            </div>
+
+                                            {% endfor %}
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            {% empty %}
+
+                            <div class="empty-category">
+                                No departments available
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     NAVIGATION LINKS
+                ================================================== -->
+               <nav class="main-navigation navbar navbar-expand-lg py-0" id="mainNavigation">
+                  <div class="nav-container d-flex align-items-center gap-4">
+
+                    <a href="/" class="navigation-link text-warning fw-bold text-decoration-none">
+                      HOME
+                    </a>
+
+                    <a href="{% url 'about' %}" class="navigation-link text-white fw-bold text-decoration-none">
+                      ABOUT US
+                    </a>
+
+                    <a href="{% url 'contact' %}" class="navigation-link text-white fw-bold text-decoration-none">
+                      CONTACT US
+                    </a>
+
+                      <a href="{% url 'product' %}" class="navigation-link text-white fw-bold text-decoration-none">
+                      PRODUCT
+                    </a>
+
+                    <!-- MY ORDERS Dropdown -->
+                    <div class="dropdown custom-dropdown">
+                      <a href="#" class="navigation-link text-white fw-bold text-decoration-none dropdown-toggle border-0"
+                         id="ordersDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        MY ORDERS <i class="bi bi-chevron-down ms-1 fs-7"></i>
+                      </a>
+                      <ul class="dropdown-menu border-0 shadow-lg py-3 rounded-0" aria-labelledby="ordersDropdown">
+                        <li><a class="dropdown-item py-2 text-secondary" href="#">Orders</a></li>
+                        <li><a class="dropdown-item py-2 text-secondary" href="#">Order Tracking</a></li>
+                      </ul>
+                    </div>
+
+                  </div>
+                </nav>
+
+
+                <!-- =================================================
+                     SHIPPING MESSAGE
+                ================================================== -->
+                <div class="shipping-message">
+
+                    <i class="bi bi-truck"></i>
+
+                    <span>
+                        Spend $120 more and get free shipping
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>

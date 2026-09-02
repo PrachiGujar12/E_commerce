@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- 1. Hero Banner Section -->
+<div class="position-relative bg-dark text-white py-5 mb-5 text-center" style="background: url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1600&auto=format&fit=crop') no-repeat center center/cover;">
+    <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
+    <div class="container position-relative py-5">
+        <h1 class="display-4 fw-bold">Contact Us</h1>
+        <p class="lead mb-0">We’d love to hear from you. Get in touch with our locations worldwide.</p>
+    </div>
+</div>
+
+<!-- 2. Where We Are Section (Matching Image Design) -->
+<div class="container my-5 py-4">
+    <!-- Section Title & Subtitle -->
+    <div class="text-center mb-5">
+        <span class="text-warning text-uppercase fw-bold small tracking-wide">LOCATION STORE</span>
+        <h2 class="display-5 fw-bold mt-1 mb-3">Where We Are</h2>
+        <p class="text-secondary mx-auto" style="max-width: 700px;">
+            The perfect way to enjoy brewing tea on low hanging fruit to identify. Duis autem vel eum iriure dolor in hendrerit
+            in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.
+        </p>
+    </div>
+
+    <!-- Store Grid -->
+    <div class="row g-4">
+        <!-- Store 1: Paris -->
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm rounded-0">
+                <img src="{% static 'images/contact/paris.jpg' %}" class="card-img-top rounded-0" style="height: 200px; object-fit: cover;" alt="Paris Store">
+                <div class="card-body px-0 pt-3">
+                    <h5 class="fw-bold fs-6">26 Rue Pelleport - Paris</h5>
+                    <hr class="text-muted my-3 opacity-25">
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="bi bi-geo-alt-fill text-warning me-2 fs-5"></i>
+                        <div>
+                            <span class="d-block text-muted small">Find us</span>
+                            <span class="fw-semibold text-dark small">Rue Saint-Antoine, Paris, France</span>
+                        </div>
+                    </div>
+                    <hr class="text-muted my-3 opacity-25">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-telephone-fill text-warning me-2 fs-5"></i>
+                        <div>
+                            <span class="d-block text-muted small">Call us</span>
+                            <span class="fw-semibold text-dark small">(+100) 123 456 7890</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Store 2: London -->
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm rounded-0">
+                <img src="{% static 'images/contact/london.jpg' %}" class="card-img-top rounded-0" style="height: 200px; object-fit: cover;" alt="London Store">
+                <div class="card-body px-0 pt-3">
+                    <h5 class="fw-bold fs-6">150 Stanley Rd - London</h5>
+                    <hr class="text-muted my-3 opacity-25">
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="bi bi-geo-alt-fill text-warning me-2 fs-5"></i>
+                        <div>
+                            <span class="d-block text-muted small">Find us</span>
+                            <span class="fw-semibold text-dark small">Brick Ln, Spitalfields, London E1, UK</span>
+                        </div>
+                    </div>
+                    <hr class="text-muted my-3 opacity-25">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-telephone-fill text-warning me-2 fs-5"></i>
+                        <div>
+                            <span class="d-block text-muted small">Call us</span>
+                            <span class="fw-semibold text-dark small">(+100) 123 456 7890</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Store 3: New York -->
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm rounded-0">
+                <img src="{% static 'images/contact/new_york.jpg' %}" class="card-img-top rounded-0" style="height: 200px; object-fit: cover;" alt="New York Store">
+                <div class="card-body px-0 pt-3">
+                    <h5 class="fw-bold fs-6">1357 Prospect - New York</h5>
+                    <hr class="text-muted my-3 opacity-25">
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="bi bi-geo-alt-fill text-warning me-2 fs-5"></i>
+                        <div>
+                            <span class="d-block text-muted small">Find us</span>
+                            <span class="fw-semibold text-dark small">Atlantic, Brooklyn, New York, US</span>
+                        </div>
+                    </div>
+                    <hr class="text-muted my-3 opacity-25">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-telephone-fill text-warning me-2 fs-5"></i>
+                        <div>
+                            <span class="d-block text-muted small">Call us</span>
+                            <span class="fw-semibold text-dark small">(+100) 123 456 7890</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Store 4: Madrid -->
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm rounded-0">
+                <img src="{% static 'images/contact/madrid.jpg' %}" class="card-img-top rounded-0" style="height: 200px; object-fit: cover;" alt="Madrid Store">
+                <div class="card-body px-0 pt-3">
+                    <h5 class="fw-bold fs-6">86 Georgia Rd - Madrid</h5>
+                    <hr class="text-muted my-3 opacity-25">
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="bi bi-geo-alt-fill text-warning me-2 fs-5"></i>
+                        <div>
+                            <span class="d-block text-muted small">Find us</span>
+                            <span class="fw-semibold text-dark small">Calle del Correo, 4, Madrid, Spain</span>
+                        </div>
+                    </div>
+                    <hr class="text-muted my-3 opacity-25">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-telephone-fill text-warning me-2 fs-5"></i>
+                        <div>
+                            <span class="d-block text-muted small">Call us</span>
+                            <span class="fw-semibold text-dark small">(+100) 123 456 7890</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 3. Full-Width Google Map Section -->
+<div class="container-fluid px-0 mt-5">
+    <div class="ratio ratio-21x9" style="max-height: 450px;">
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.25280012247!2d-74.11976241724036!3d40.69766374859063!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY!5e0!3m2!1sen!2sus!4v1680000000000!5m2!1sen!2sus"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+</div>
+
+{% endblock content %}

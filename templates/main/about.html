@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Hero Banner Section -->
+<div class="position-relative text-white text-center py-5"
+     style="background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat; padding: 120px 0 !important;">
+  <div class="container py-4">
+    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-3 text-uppercase tracking-wider">Crafted With Passion</span>
+    <h1 class="fw-extrabold display-3 mb-3">WE ARE E-SHOP</h1>
+    <p class="lead text-white-50 mx-auto fs-5" style="max-width: 700px;">
+      Connecting millions of passionate shoppers to premium quality products and unbeatable everyday value.
+    </p>
+    <nav aria-label="breadcrumb" class="mt-4">
+      <ol class="breadcrumb justify-content-center mb-0 text-white-50 fs-6">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-white-50 text-decoration-none">Home</a></li>
+        <li class="breadcrumb-item active text-white" aria-current="page">About Us</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<!-- Story / Mission Section -->
+<div class="container my-5 py-5">
+  <div class="row align-items-center g-5">
+    <div class="col-lg-6">
+      <div class="position-relative">
+        <img src="{% static 'images/about/about1.jpg' %}"
+             onerror="this.src='{% static 'images/img_1.jpg' %}';"
+             alt="E-commerce Store Operations"
+             class="img-fluid rounded-4 shadow-lg w-100 object-fit-cover"
+             style="min-height: 420px;">
+        <div class="position-absolute bottom-0 end-0 bg-warning text-dark p-4 rounded-4 shadow me-4 mb-n4 d-none d-sm-block">
+          <h3 class="fw-bold mb-0 display-6">100%</h3>
+          <p class="mb-0 fw-semibold">Customer Satisfaction</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <span class="text-warning fw-bold text-uppercase tracking-wide small d-block mb-2">Our Mission</span>
+      <h2 class="fw-bold display-6 mb-4 text-dark">Building the Future of Online Shopping</h2>
+      <p class="text-secondary leading-relaxed mb-4">
+        Founded with a vision to make online retail effortless and reliable, we handpick top-tier items across fashion, tech, and lifestyle categories. We believe shopping should be fast, seamless, and completely secure.
+      </p>
+
+      <div class="row g-3">
+        <div class="col-sm-6">
+          <div class="d-flex align-items-center p-3 bg-light rounded-3">
+            <i class="bi bi-shield-check text-warning fs-2 me-3"></i>
+            <div>
+              <h6 class="fw-bold mb-0 text-dark">Verified Sellers</h6>
+              <small class="text-muted">Direct Sourcing</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="d-flex align-items-center p-3 bg-light rounded-3">
+            <i class="bi bi-headset text-warning fs-2 me-3"></i>
+            <div>
+              <h6 class="fw-bold mb-0 text-dark">24/7 Support</h6>
+              <small class="text-muted">Always Available</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Key Impact Statistics -->
+<div class="bg-dark text-white py-5">
+  <div class="container py-3">
+    <div class="row text-center g-4">
+      <div class="col-6 col-md-3">
+        <h2 class="fw-bold text-warning display-5 mb-1">50K+</h2>
+        <p class="text-white-50 mb-0">Active Customers</p>
+      </div>
+      <div class="col-6 col-md-3">
+        <h2 class="fw-bold text-warning display-5 mb-1">120+</h2>
+        <p class="text-white-50 mb-0">Global Partners</p>
+      </div>
+      <div class="col-6 col-md-3">
+        <h2 class="fw-bold text-warning display-5 mb-1">99.8%</h2>
+        <p class="text-white-50 mb-0">On-Time Delivery</p>
+      </div>
+      <div class="col-6 col-md-3">
+        <h2 class="fw-bold text-warning display-5 mb-1">24/7</h2>
+        <p class="text-white-50 mb-0">Customer Care</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Features Section -->
+<div class="bg-light py-5">
+  <div class="container py-4">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold text-dark">Why Shoppers Prefer Us</h2>
+      <p class="text-muted mx-auto" style="max-width: 500px;">Experience a retail service built specifically around reliability and speed.</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
+          <div class="bg-warning-subtle text-warning rounded-circle d-inline-flex align-items-center justify-content-center mx-auto mb-4" style="width: 70px; height: 70px;">
+            <i class="bi bi-truck fs-2"></i>
+          </div>
+          <h5 class="fw-bold text-dark">Free & Fast Shipping</h5>
+          <p class="text-secondary small mb-0">Complimentary express shipping on orders meeting threshold requirements.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
+          <div class="bg-warning-subtle text-warning rounded-circle d-inline-flex align-items-center justify-content-center mx-auto mb-4" style="width: 70px; height: 70px;">
+            <i class="bi bi-shield-lock fs-2"></i>
+          </div>
+          <h5 class="fw-bold text-dark">Encrypted Payments</h5>
+          <p class="text-secondary small mb-0">Bank-level 256-bit SSL encryption to protect every transaction details.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
+          <div class="bg-warning-subtle text-warning rounded-circle d-inline-flex align-items-center justify-content-center mx-auto mb-4" style="width: 70px; height: 70px;">
+            <i class="bi bi-arrow-counterclockwise fs-2"></i>
+          </div>
+          <h5 class="fw-bold text-dark">Hassle-Free Returns</h5>
+          <p class="text-secondary small mb-0">No questions asked 30-day money-back guarantee policies.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Leadership Team Section -->
+<div class="container my-5 py-4">
+  <div class="text-center mb-5">
+    <span class="text-warning fw-bold text-uppercase tracking-wide small">The Brains Behind Us</span>
+    <h2 class="fw-bold text-dark">Meet Our Leadership</h2>
+  </div>
+  <div class="row g-4">
+    <!-- Member 1 -->
+    <div class="col-6 col-md-3">
+      <div class="card border-0 shadow-sm rounded-4 overflow-hidden text-center">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop" class="card-img-top object-fit-cover" style="height: 250px;" alt="CEO">
+        <div class="card-body py-3">
+          <h6 class="fw-bold text-dark mb-0">Sophia Carter</h6>
+          <small class="text-muted">Founder & CEO</small>
+        </div>
+      </div>
+    </div>
+    <!-- Member 2 -->
+    <div class="col-6 col-md-3">
+      <div class="card border-0 shadow-sm rounded-4 overflow-hidden text-center">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop" class="card-img-top object-fit-cover" style="height: 250px;" alt="CTO">
+        <div class="card-body py-3">
+          <h6 class="fw-bold text-dark mb-0">James Reynolds</h6>
+          <small class="text-muted">Head of Operations</small>
+        </div>
+      </div>
+    </div>
+    <!-- Member 3 -->
+    <div class="col-6 col-md-3">
+      <div class="card border-0 shadow-sm rounded-4 overflow-hidden text-center">
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop" class="card-img-top object-fit-cover" style="height: 250px;" alt="CMO">
+        <div class="card-body py-3">
+          <h6 class="fw-bold text-dark mb-0">Elena Vance</h6>
+          <small class="text-muted">Marketing Lead</small>
+        </div>
+      </div>
+    </div>
+    <!-- Member 4 -->
+    <div class="col-6 col-md-3">
+      <div class="card border-0 shadow-sm rounded-4 overflow-hidden text-center">
+        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=600&auto=format&fit=crop" class="card-img-top object-fit-cover" style="height: 250px;" alt="Lead Designer">
+        <div class="card-body py-3">
+          <h6 class="fw-bold text-dark mb-0">David Chen</h6>
+          <small class="text-muted">Product Curator</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Call To Action Section -->
+<div class="container my-5 py-4">
+  <div class="card border-0 rounded-4 overflow-hidden text-white shadow-lg" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
+    <div class="card-body p-5 text-center">
+      <h2 class="fw-bold mb-3">Upgrade Your Shopping Experience Today</h2>
+      <p class="text-white-50 mb-4 mx-auto" style="max-width: 550px;">Browse our full catalog to access exclusive discounts and new collection drops.</p>
+      <a href="{% url 'home' %}" class="btn text-dark fw-bold px-4 py-3 rounded-3 shadow" style="background-color: #ffb703;">
+        <i class="bi bi-bag-fill me-2"></i>Shop All Collections
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

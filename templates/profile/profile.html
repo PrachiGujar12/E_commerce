@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="position-relative text-white text-center py-5"
+     style="background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('{% static "images/hero-bg.jpg" %}') center/cover no-repeat; padding: 80px 0 !important;">
+  <div class="container py-4">
+    <h1 class="fw-normal display-4 mb-2">PROFILE</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb justify-content-center mb-0 text-white-50 fs-6">
+        <li class="breadcrumb-item"><a href="#" class="text-white-50 text-decoration-none">Home</a></li>
+        <li class="breadcrumb-item active text-white" aria-current="page">My Profile</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<div class="container my-5 py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 col-xl-7">
+
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header bg-white border-bottom-0 pt-4 px-4 px-md-5">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h4 class="fw-bold text-dark mb-1">Account Settings</h4>
+                            <p class="text-muted small mb-0">Manage your personal information and password details.</p>
+                        </div>
+                        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-semibold">User Account</span>
+                    </div>
+                </div>
+
+                {% if messages %}
+                    <div class="px-4 px-md-5 pt-3">
+                        {% for message in messages %}
+                            {% if message.tags == 'success' %}
+                                <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+                                    <i class="bi bi-check-circle-fill me-2"></i>{{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="card-body p-4 p-md-5">
+                    <!-- Profile Update Form -->
+                    <form action="{% url 'update_profile' %}" method="POST" class="needs-validation" novalidate>
+                        {% csrf_token %}
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="first_name" class="form-label fw-semibold text-secondary small">
+                                    FIRST NAME <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 text-muted">
+                                        <i class="bi bi-person"></i>
+                                    </span>
+                                    <input type="text"
+                                           class="form-control bg-light border-start-0 ps-0 shadow-none"
+                                           id="first_name"
+                                           name="first_name"
+                                           value="{{ user.first_name }}"
+                                           placeholder="Enter Firstname"
+                                           required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="last_name" class="form-label fw-semibold text-secondary small">
+                                    LAST NAME <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 text-muted">
+                                        <i class="bi bi-person"></i>
+                                    </span>
+                                    <input type="text"
+                                           class="form-control bg-light border-start-0 ps-0 shadow-none"
+                                           id="last_name"
+                                           name="last_name"
+                                           value="{{ user.last_name }}"
+                                           placeholder="Enter Lastname"
+                                           required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="username" class="form-label fw-semibold text-secondary small">
+                                    USERNAME <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 text-muted">
+                                        <i class="bi bi-at"></i>
+                                    </span>
+                                    <input type="text"
+                                           class="form-control bg-light border-start-0 ps-0 shadow-none"
+                                           id="username"
+                                           name="username"
+                                           value="{{ user.username }}"
+                                           required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="email" class="form-label fw-semibold text-secondary small">
+                                    EMAIL ADDRESS <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 text-muted">
+                                        <i class="bi bi-envelope"></i>
+                                    </span>
+                                    <input type="email"
+                                           class="form-control bg-light border-start-0 ps-0 shadow-none"
+                                           id="email"
+                                           name="email"
+                                           value="{{ user.email }}"
+                                           required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="form-label fw-semibold text-secondary small">
+                                NEW PASSWORD <span class="text-muted fw-normal">(Optional)</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0 text-muted">
+                                    <i class="bi bi-lock"></i>
+                                </span>
+                                <input type="password"
+                                       class="form-control bg-light border-start-0 ps-0 shadow-none"
+                                       id="password"
+                                       name="password"
+                                       placeholder="Fill only if you want to change password">
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                                class="btn fw-bold px-4 py-2-5 shadow-sm text-uppercase text-dark w-100"
+                                style="background-color: #ffb703; border: none; letter-spacing: 0.5px; border-radius: 8px;">
+                            <i class="bi bi-check-circle-fill me-2"></i>Update Profile
+                        </button>
+                    </form>
+
+                    <!-- Separate Logout Section -->
+                    <hr class="my-4 text-muted opacity-25">
+
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 pt-1">
+                        <div>
+                            <span class="fw-semibold text-dark d-block">Finished your session?</span>
+                            <small class="text-muted">Sign out safely from your account.</small>
+                        </div>
+                        <form action="{% url 'logout' %}" method="POST" class="m-0">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    class="btn btn-outline-danger fw-semibold px-4 py-2"
+                                    style="border-radius: 8px;">
+                                <i class="bi bi-box-arrow-right me-2"></i>Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

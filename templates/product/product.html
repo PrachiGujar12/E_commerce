@@ -1,0 +1,447 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  /* Custom Accent & Theme Colors */
+  .text-accent { color: #ffb800; }
+  .bg-accent { background-color: #ffb800; color: #000; }
+  .btn-accent {
+    background-color: #ffb800;
+    color: #000;
+    font-weight: 600;
+    border: none;
+    transition: background-color 0.2s;
+  }
+  .btn-accent:hover {
+    background-color: #e0a200;
+    color: #000;
+  }
+
+  /* Left Sidebar Category & Filter Styling */
+  .pt-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    position: relative;
+    padding-bottom: 8px;
+    margin-bottom: 1rem;
+  }
+  .pt-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background-color: #ffb800;
+  }
+
+  .single-widget-category {
+    margin-bottom: 10px;
+  }
+
+  /* Custom Checkbox Styling */
+  .single-widget-category input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    vertical-align: middle;
+    margin-right: 8px;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .single-widget-category input[type="checkbox"]:checked {
+    border: 4px solid #ffb800;
+    background-color: #000;
+  }
+
+  .single-widget-category label {
+    cursor: pointer;
+    color: #6c757d;
+    font-size: 0.9rem;
+    user-select: none;
+    transition: color 0.2s;
+  }
+
+  .single-widget-category label:hover,
+  .single-widget-category input[type="checkbox"]:checked + label {
+    color: #000 !important;
+    font-weight: 600;
+  }
+
+  .single-widget-category label span {
+    color: #6c757d;
+    font-size: 0.85rem;
+    margin-left: 4px;
+  }
+
+  /* Price Filter Range Customizing */
+  .price-range-slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #e9ecef;
+    outline: none;
+    accent-color: #ffb800;
+    cursor: pointer;
+  }
+
+  .price-range-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #ffb800;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+
+  .price-range-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border: none;
+    border-radius: 50%;
+    background: #ffb800;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+
+  .price-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+
+  .price-input-wrapper input {
+    width: 90px;
+    padding: 4px 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-weight: 600;
+    color: #000;
+    background-color: #f8f9fa;
+  }
+
+  .tp-btn-square-lg {
+    background-color: #ffb800;
+    color: #000;
+    font-weight: 600;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .tp-btn-square-lg:hover {
+    background-color: #e0a200;
+  }
+
+  /* Hero Banner */
+  .hero-banner {
+    background: linear-gradient(135deg, #180b38 0%, #3e1259 50%, #150930 100%);
+    color: #fff;
+    border-radius: 4px;
+    padding: 2.5rem;
+  }
+
+  /* Product Card Grid */
+  .product-grid-card {
+    border: 1px solid #eee;
+    border-radius: 0;
+    transition: box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .product-grid-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  /* Product Hover Action Icons */
+  .product-img-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-action-icons {
+    position: absolute;
+    top: 10px;
+    right: -50px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: right 0.3s ease-in-out;
+    z-index: 5;
+  }
+
+  .product-grid-card:hover .product-action-icons {
+    right: 10px;
+  }
+
+  .action-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #fff;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    transition: all 0.2s ease;
+    border: none;
+  }
+
+  .action-btn:hover {
+    background-color: #0d6efd;
+    color: #fff;
+  }
+</style>
+
+<div class="container my-4">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb small text-muted">
+      <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-muted">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Shop</li>
+    </ol>
+  </nav>
+
+  <div class="row">
+    <!-- Left Sidebar: Selectable Categories & Price Filter -->
+    <div class="col-xl-3 col-lg-4">
+        <!-- Product Categories -->
+        <div class="product-widget mb-4 p-3 bg-white border rounded-1">
+          <h5 class="pt-title">Product categories</h5>
+          <div class="widget-category-list mt-20">
+            <form action="#">
+              {% for i in category %}
+                <div class="single-widget-category d-flex align-items-center justify-content-between">
+                  <div>
+                    <input type="checkbox" class="filter-checkbox" data-filter="category" value="{{ i.id }}" id="cat-item-{{ forloop.counter }}" name="cat-item">
+                    <label for="cat-item-{{ forloop.counter }}">{{ i.name }}<span>({{ i.product_set.all.count }})</span></label>
+                  </div>
+                </div>
+              {% endfor %}
+            </form>
+          </div>
+        </div>
+
+        <!-- Price Filter Widget -->
+        <div class="product-widget mb-4 p-3 bg-white border rounded-1">
+          <h5 class="pt-title">Filter By Price</h5>
+          <div class="price_slider mt-3">
+            <label for="priceRange" class="visually-hidden">Price Range</label>
+            <input
+              type="range"
+              id="priceRange"
+              class="price-range-slider"
+              value="{{FilterPrice}}"
+              min="{{min_price.price__min}}"
+              max="{{max_price.price__max}}"
+              oninput="document.getElementById('maxPrice').value = this.value"
+            />
+
+            <form action="" class="s-form mt-3" method="get">
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="price-input-wrapper">
+                  <label for="maxPrice">Max Price: ₹ </label>
+                  <input
+                    type="number"
+                    id="maxPrice"
+                    name="FilterPrice"
+                    value="{{FilterPrice}}"
+                    readonly
+                  />
+                </div>
+                <button type="submit" id="priceFilterBtn" class="tp-btn-square-lg">Filter</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Color Filter Widget -->
+        <div class="product-widget mb-4 p-3 bg-white border rounded-1">
+          <h5 class="pt-title">Choose Color</h5>
+          <div class="product__color mt-3">
+            <ul class="list-unstyled d-flex flex-wrap gap-2 m-0 p-0">
+              {% for i in color %}
+                <li>
+                  <a
+                    href="?colorID={{ i.id }}"
+                    class="d-inline-block rounded-circle border border-2 border-white shadow-sm {{ i.code }}"
+                    style="width: 25px; height: 25px; background-color: {{ i.code }};"
+                    aria-label="{{ i.code }}"
+                  ></a>
+                </li>
+              {% endfor %}
+
+            </ul>
+          </div>
+        </div>
+
+        <div class="product-widget mb-4 p-3 bg-white border rounded-1">
+          <h5 class="pt-title">Choose Brand</h5>
+          <div class="widget-category-list mt-20">
+            <form action="#">
+              {% for i in brand %}
+              <div class="single-widget-category">
+               <input type="checkbox" class="filter-checkbox" data-filter="brand" value="{{ i.id }}" id="brand-{{i.id}}" name="filter-checkbox">
+                <label for="brand-{{i.id}}">{{i.name}} <span>({{i.product_set.all.count}})</span></label>
+              </div>
+             {% endfor %}
+
+            </form>
+          </div>
+        </div>
+      </div>
+
+    <!-- Main Content Area -->
+    <main class="col-xl-9 col-lg-8">
+
+      <!-- Banner Section -->
+      <div class="hero-banner mb-4 d-flex align-items-center justify-content-between">
+        <div>
+          <span class="badge border border-light text-uppercase px-2 py-1 mb-2">Special Offer</span>
+          <h1 class="fw-bold display-6 mb-1 text-uppercase">Cyber Monday</h1>
+          <p class="text-accent fw-bold fs-5 mb-0">UP TO <span class="fs-4">50% OFF</span></p>
+        </div>
+        <div class="text-end">
+          <p class="mb-1 small fw-semibold text-light">Hurry Up!</p>
+          <p class="small mb-3">Free Shipping All Order Over $99</p>
+          <a href="#" class="btn btn-accent px-4 py-2 text-uppercase btn-sm">Discover Now</a>
+        </div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="d-flex justify-content-between align-items-center bg-white p-2 border rounded-1 mb-4">
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-sm text-dark border-0 fs-5"><i class="bi bi-grid-3x3-gap-fill text-accent"></i></button>
+          <button class="btn btn-sm text-muted border-0 fs-5"><i class="bi bi-list-ul"></i></button>
+          <span class="text-muted small ms-2" id="resultsCount">Showing all products</span>
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+          <select class="form-select form-select-sm border-light-subtle" style="width: auto;">
+            <option selected>10</option>
+            <option>20</option>
+          </select>
+          <select class="form-select form-select-sm border-light-subtle" style="width: auto;">
+            <option selected>Latest</option>
+            <option>Price: Low to High</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Products Grid Target Container -->
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-0 bg-white border" id="filteredProducts">
+        {% for i in product %}
+        <div class="col product-grid-card p-3 d-flex flex-column justify-content-between product-item">
+          <div>
+            <!-- Image & Hover Quick Actions -->
+            <div class="product-img-wrapper text-center mb-3">
+              <img src="{{ i.featured_image }}" alt="{{ i.product_name }}" class="img-fluid" style="max-height: 140px; object-fit: contain;">
+
+              <!-- Action Icons -->
+              <div class="product-action-icons">
+                <a href="#" class="action-btn" title="Quick View"><i class="bi bi-eye"></i></a>
+                <a href="#" class="action-btn" title="Add to Wishlist"><i class="bi bi-heart"></i></a>
+                <a href="#" class="action-btn" title="Compare"><i class="bi bi-arrow-left-right"></i></a>
+              </div>
+            </div>
+
+            <h6 class="fw-normal text-dark fs-6 mb-1">{{ i.product_name|truncatewords:5 }}</h6>
+            <div class="text-warning small mb-1">
+              <i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i>
+              <span class="text-muted ms-1 small">(01 review)</span>
+            </div>
+            <p class="fw-bold text-dark mb-3">₹{{ i.price }}</p>
+          </div>
+          <form action="{% url 'cart_add' i.id %}" method="POST" class="w-100">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-accent w-100 text-uppercase py-2 rounded-0 fs-7">Add to Cart</button>
+          </form>
+        </div>
+        {% endfor %}
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- jQuery CDN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- AJAX Script that reconstructs HTML dynamically inside single file -->
+<script>
+$(document).ready(function() {
+  $(".filter-checkbox").on('change', function() {
+    var filter_object = {};
+
+    $(".filter-checkbox").each(function(index, ele) {
+      var filter_key = $(this).data('filter');
+
+      filter_object[filter_key] = Array.from(
+        document.querySelectorAll('input[data-filter="' + filter_key + '"]:checked')
+      ).map(function(el) {
+        return el.value;
+      });
+    });
+
+    $.ajax({
+      url: "{% url 'filter_data' %}",
+      data: filter_object,
+      traditional: true, // Required for Django to parse array lists properly (brand[], category[])
+      dataType: 'json',
+      success: function(res) {
+        var productHTML = '';
+
+        if (res.data.length > 0) {
+          $.each(res.data, function(index, i) {
+            const getCsrfToken = () => {
+              return document.querySelector('[name=csrfmiddlewaretoken]')?.value || '';
+            };
+         productHTML += `
+                <div class="col product-grid-card p-3 d-flex flex-column justify-content-between product-item">
+                  <div>
+                    <div class="product-img-wrapper text-center mb-3">
+                      <img src="${i.featured_image}" alt="${i.product_name}" class="img-fluid" style="max-height: 140px; object-fit: contain;">
+                      <div class="product-action-icons">
+                        <a href="#" class="action-btn" title="Quick View"><i class="bi bi-eye"></i></a>
+                        <a href="#" class="action-btn" title="Add to Wishlist"><i class="bi bi-heart"></i></a>
+                        <a href="#" class="action-btn" title="Compare"><i class="bi bi-arrow-left-right"></i></a>
+                      </div>
+                    </div>
+                    <h6 class="fw-normal text-dark fs-6 mb-1">${i.product_name}</h6>
+                    <div class="text-warning small mb-1">
+                      <i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i>
+                      <span class="text-muted ms-1 small">(01 review)</span>
+                    </div>
+                    <p class="fw-bold text-dark mb-3">₹${i.price}</p>
+                  </div>
+
+                  <!-- Dynamic Form with JavaScript Interpolation -->
+                  <form action="/cart/add/${i.id}/" method="POST" class="w-100">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="${getCsrfToken()}">
+                    <button type="submit" class="btn btn-accent w-100 text-uppercase py-2 rounded-0 fs-7">Add to Cart</button>
+                  </form>
+                </div>`;
+          });
+        } else {
+          productHTML = `<div class="p-4 text-center w-100"><p class="text-muted mb-0">No products found matching selected filters.</p></div>`;
+        }
+
+        $("#filteredProducts").html(productHTML);
+      }
+    });
+  });
+});
+</script>
+{% endblock content %}

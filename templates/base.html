@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+<head>
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopEase - Modern E-Commerce</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <!-- Google Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Your Custom CSS -->
+    <link
+        rel="stylesheet"
+        href="{% static 'assets/css/style.css' %}"
+    >
+</head>
+
+<body>
+
+<!-- =========================================================
+     PAGE LOADER
+========================================================= -->
+<div id="pageLoader">
+    <div class="loader-content">
+
+        <div class="loader-logo">
+            <span class="loader-logo-icon">
+                <i class="bi bi-bag-heart-fill"></i>
+            </span>
+            <span>ShopEase</span>
+        </div>
+
+        <div class="spinner-border text-primary loader-spinner" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+
+        <p class="text-muted mt-3 mb-0">
+            Loading, please wait...
+        </p>
+
+    </div>
+</div>
+
+
+<!-- =========================================================
+     MAIN HEADER
+========================================================= -->
+
+{% include 'includes/header.html' %}
+
+<!-- =========================================================
+     MAIN CONTENT
+========================================================= -->
+<main>
+
+    {% block content %}
+
+    <!-- Page content will come here -->
+
+    {% endblock content %}
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+{% include 'includes/footer.html' %}
+
+
+    <!-- Bootstrap JavaScript -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+  <script>
+
+window.addEventListener("load", function () {
+
+    const loader = document.getElementById("pageLoader");
+
+    if (!loader) {
+        return;
+    }
+
+    setTimeout(function () {
+
+        loader.classList.add("hide");
+
+        setTimeout(function () {
+            loader.remove();
+        }, 450);
+
+    }, 300);
+
+});
+
+</script>
+
+
+<!-- =========================================================
+     DEPARTMENT DROPDOWN JAVASCRIPT
+========================================================= -->
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const button = document.getElementById("deptDropdownBtn");
+    const menu = document.getElementById("deptMenu");
+    const arrow = document.getElementById("departmentArrow");
+
+    if (!button || !menu) {
+        return;
+    }
+
+
+    /*
+     * IMPORTANT:
+     * Dropdown is hidden by default.
+     */
+    menu.classList.remove("show");
+    button.classList.remove("active");
+    button.setAttribute("aria-expanded", "false");
+
+
+    /*
+     * Toggle department menu
+     */
+    button.addEventListener("click", function (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const isOpen = menu.classList.contains("show");
+
+        if (isOpen) {
+
+            closeDepartmentMenu();
+
+        } else {
+
+            openDepartmentMenu();
+
+        }
+
+    });
+
+
+    /*
+     * Open menu
+     */
+    function openDepartmentMenu() {
+
+        menu.classList.add("show");
+
+        button.classList.add("active");
+
+        button.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+    }
+
+
+    /*
+     * Close menu
+     */
+    function closeDepartmentMenu() {
+
+        menu.classList.remove("show");
+
+        button.classList.remove("active");
+
+        button.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+    }
+
+
+    /*
+     * Close when clicking outside
+     */
+    document.addEventListener("click", function (event) {
+
+        if (
+            !button.contains(event.target) &&
+            !menu.contains(event.target)
+        ) {
+
+            closeDepartmentMenu();
+
+        }
+
+    });
+
+
+    /*
+     * Prevent clicks inside menu from
+     * immediately closing it.
+     */
+    menu.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+    });
+
+
+    /*
+     * Close with ESC
+     */
+    document.addEventListener("keydown", function (event) {
+
+        if (event.key === "Escape") {
+
+            closeDepartmentMenu();
+
+        }
+
+    });
+
+});
+
+</script>
+
+
+<!-- =========================================================
+     MOBILE NAVIGATION
+========================================================= -->
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const mobileButton =
+        document.getElementById("mobileMenuButton");
+
+    const navigation =
+        document.getElementById("mainNavigation");
+
+
+    if (!mobileButton || !navigation) {
+        return;
+    }
+
+
+    mobileButton.addEventListener("click", function () {
+
+        navigation.classList.toggle("mobile-open");
+
+        const icon =
+            mobileButton.querySelector("i");
+
+        if (navigation.classList.contains("mobile-open")) {
+
+            icon.classList.remove("bi-list");
+            icon.classList.add("bi-x-lg");
+
+        } else {
+
+            icon.classList.remove("bi-x-lg");
+            icon.classList.add("bi-list");
+
+        }
+
+    });
+
+});
+
+</script>
+
+
+<!-- =========================================================
+     PRODUCT IMAGE GALLERY
+========================================================= -->
+<script>
+
+function changeImage(productId, newSrc, element) {
+
+    const mainImg =
+        document.getElementById(
+            'mainProductImg-' + productId
+        );
+
+
+    if (mainImg) {
+        mainImg.src = newSrc;
+    }
+
+
+    const parent =
+        element.parentElement;
+
+
+    const thumbs =
+        parent.querySelectorAll('.thumb-box');
+
+
+    thumbs.forEach(function (thumb) {
+
+        thumb.classList.remove('active');
+
+    });
+
+
+    element.classList.add('active');
+
+}
+
+</script>
+
+
+<!-- =========================================================
+     QUANTITY FUNCTIONS
+========================================================= -->
+<script>
+
+function incrementQty(productId) {
+
+    const input =
+        document.getElementById(
+            'qtyInput-' + productId
+        );
+
+
+    if (!input) {
+        return;
+    }
+
+
+    let value =
+        parseInt(input.value) || 1;
+
+
+    input.value =
+        value + 1;
+
+}
+
+
+function decrementQty(productId) {
+
+    const input =
+        document.getElementById(
+            'qtyInput-' + productId
+        );
+
+
+    if (!input) {
+        return;
+    }
+
+
+    let value =
+        parseInt(input.value) || 1;
+
+
+    if (value > 1) {
+
+        input.value =
+            value - 1;
+
+    }
+
+}
+
+</script>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+  const trigger = document.getElementById('cartTrigger');
+  const modalElement = document.getElementById('cartModal');
+  const cartModal = new bootstrap.Modal(modalElement);
+
+  // Show modal on mouse enter
+  trigger.addEventListener('mouseenter', function () {
+    cartModal.show();
+  });
+
+  // Hide modal when mouse leaves the modal window
+  modalElement.addEventListener('mouseleave', function () {
+    cartModal.hide();
+  });
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load cart_tag %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold display-6 mb-2">Shopping Cart</h1>
+        <p class="text-muted">Review your items, manage quantities, and proceed to checkout.</p>
+    </div>
+
+    {% if request.session.cart %}
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                <div class="table-responsive">
+                    <table class="table align-middle text-center mb-0">
+                        <thead class="bg-light text-uppercase fs-7 text-secondary">
+                            <tr>
+                                <th scope="col" class="py-3" style="width: 15%;">Product</th>
+                                <th scope="col" class="py-3" style="width: 30%;">Details</th>
+                                <th scope="col" class="py-3">Unit Price</th>
+                                <th scope="col" class="py-3">Quantity</th>
+                                <th scope="col" class="py-3">Total</th>
+                                <th scope="col" class="py-3">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="border-top-0">
+                            {% for key, value in request.session.cart.items %}
+                            <tr id="id{{value.id}}">
+                                <td class="py-3">
+                                    <div class="bg-light rounded-3 p-2 d-inline-block">
+                                        <img src="{{value.featured_image}}" class="img-fluid rounded" alt="{{value.product_name}}" style="max-height: 80px; object-fit: contain;">
+                                    </div>
+                                </td>
+                                <td class="py-3 text-start ps-3">
+                                    <h6 class="fw-bold mb-1">{{value.product_name}}</h6>
+<!--                                    <p class="text-muted small mb-0">Color: Olive Green | Size: M</p>-->
+                                </td>
+                                <td class="py-3 fw-semibold">₹{{value.price}}</td>
+                                <td class="py-3">
+                                    <div class="d-flex justify-content-center">
+                                        <div class="input-group input-group-sm rounded-3 shadow-none border" style="max-width: 110px;">
+                                            <a href="{% url 'item_decrement' value.product_id %}#id{{value.id}}" class="btn btn-link text-dark text-decoration-none px-2 py-0 border-end">-</a>
+                                            <input type="text" class="form-control text-center border-0 fw-bold px-0 bg-transparent" value="{{ value.quantity }}" readonly>
+                                            <a href="{% url 'item_increment' value.product_id %}#id{{value.id}}" class="btn btn-link text-dark text-decoration-none px-2 py-0 border-start">+</a>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-3 fw-bold text-primary">₹{{ value.price|multiply:value.quantity }}</td>
+                                <td class="py-3">
+                                    <a href="{% url 'item_clear' key %}" class="btn btn-sm btn-outline-danger border-0 rounded-circle p-2" title="Remove item">
+                                        <i class="bi bi-trash fs-6"></i> &times;
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card-footer bg-white border-top-0 p-3 d-flex justify-content-between align-items-center">
+                    <a href="#" class="btn btn-outline-secondary rounded-pill px-4 btn-sm fw-semibold">
+                        &larr; Continue Shopping
+                    </a>
+                    <a href="{% url 'cart_clear' %}" class="btn btn-light rounded-pill px-4 btn-sm fw-semibold text-muted">
+                        Clear Cart
+                    </a>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4 p-3 mb-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <span class="fw-semibold text-secondary">Have a promo code?</span>
+                    <form method="get">
+                        {% if valid_coupon %}
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>{{coupon.code}}</strong>&nbsp; {{valid_coupon}}
+                                <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% elif invalid_coupon %}
+                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                {{invalid_coupon}}
+                                <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endif %}
+                        <div class="input-group input-group-sm w-auto">
+                            <input type="text" class="form-control rounded-start-pill ps-3" name="coupon_code" placeholder="Enter coupon code">
+                            <button class="btn btn-dark rounded-end-pill px-3" type="submit">Apply</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+      <div class="col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 sticky-top" style="top: 2rem;">
+                <div class="card-body p-4">
+
+                    <!-- Header -->
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h5 class="fw-bold mb-0 text-dark">Order Summary</h5>
+                        <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-semibold">
+                            {{ request.session.cart|length }} {% if request.session.cart|length == 1 %}Item{% else %}Items{% endif %}
+                        </span>
+                    </div>
+
+                    <!-- Price Breakdown -->
+                    <div class="vstack gap-2 mb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-secondary small">Items Subtotal</span>
+                            <span class="fw-semibold text-dark">₹{{ cart_total_amount|floatformat:2 }}</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-secondary small">Packing Cost</span>
+                            <span class="fw-semibold text-dark">₹{{ packing_cost|floatformat:2 }}</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-secondary small">Estimated Tax</span>
+                            <span class="fw-semibold text-dark">₹{{ tax|floatformat:2 }}</span>
+                        </div>
+
+                        {% if valid_coupon %}
+                        <div class="d-flex justify-content-between align-items-center text-success">
+                            <span class="small">Coupon Discount</span>
+                            <span class="fw-semibold" id="discount-amount">{{ coupon.discount }}%</span>
+                        </div>
+                        {% endif %}
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-secondary small">Delivery Charge</span>
+                            {% if cart_total_amount > 500 %}
+                                <span class="badge bg-success-subtle text-success fw-bold px-2 py-1">Free</span>
+                            {% else %}
+                                <span class="fw-semibold text-dark">₹120.00</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Total Box -->
+                    <div class="card border-0 bg-light rounded-3 p-3 my-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="fw-bold text-dark d-block">Order Total</span>
+                                <small class="text-muted" style="font-size: 0.75rem;">Includes taxes & charges</small>
+                            </div>
+                            <span class="fw-bold fs-4 text-primary" id="total">
+                                ₹{{ grand_total|floatformat:2 }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <div class="d-grid gap-2 mb-4">
+                        <a href="{% url 'checkout' %}" class="btn btn-primary btn-lg rounded-pill fw-bold shadow-sm py-3 d-flex align-items-center justify-content-center gap-2">
+                            <span>Proceed to Checkout</span>
+                            <i class="bi bi-arrow-right fs-5"></i>
+                        </a>
+                    </div>
+
+                    <!-- Trust / Security Footer -->
+                    <div class="pt-3 border-top text-center">
+                        <p class="text-muted small mb-2 d-flex align-items-center justify-content-center gap-1">
+                            <i class="bi bi-shield-check text-success fs-6"></i>
+                            <span>Guaranteed Safe & Secure Checkout</span>
+                        </p>
+                        <div class="d-flex justify-content-center align-items-center gap-2 text-secondary fs-5">
+                            <i class="bi bi-credit-card-2-front" title="Credit / Debit Card"></i>
+                            <i class="bi bi-paypal" title="PayPal"></i>
+                            <i class="bi bi-wallet2" title="UPI / Wallets"></i>
+                            <i class="bi bi-bank" title="Net Banking"></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+</div>
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <h4 class="text-muted">Your cart is empty.</h4>
+        <a href="#" class="btn btn-primary rounded-pill px-4 mt-3">Start Shopping</a>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .fs-7 { font-size: 0.75rem; letter-spacing: 0.05em; }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var item_amount = Number("{{ cart_total_amount|default:0 }}") || 0;
+        var tax = Number("{{ tax|default:0 }}") || 0;
+        var packing_cost = Number("{{ packing_cost|default:0 }}") || 0;
+        var coupon_discount = Number("{{ coupon.discount|default:0 }}") || 0;
+
+        var total_charges = tax + packing_cost;
+        var delivery_fee = item_amount > 500 ? 0 : 120;
+        var discounted_item_amount = item_amount;
+
+        if (coupon_discount > 0) {
+            discounted_item_amount = item_amount - (item_amount * coupon_discount / 100);
+        }
+
+        var final_total = discounted_item_amount + total_charges + delivery_fee;
+
+        var totalElement = document.getElementById("total");
+        if (totalElement) {
+            totalElement.innerHTML = "₹" + final_total.toFixed(2);
+        }
+    });
+</script>
+{% endblock content %}
