@@ -23,7 +23,7 @@ def HOME(request):
     product = Product.objects.filter(section__name = "Top Deals Of The Day")
 
 
-    return render(request, 'Main/home.html', {
+    return render(request, 'main/home.html', {
         'sliders': sliders,
         'banners': banners,
         'main_category': main_category,
