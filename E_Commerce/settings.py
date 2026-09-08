@@ -27,7 +27,12 @@ SECRET_KEY = "django-insecure-@al=8xx#lhcy6$gtwa8)uvt+9@c)v(@o!-ig-%#2mkwen$ft6a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+
+# Required for Django to accept requests/forms through the GitHub Codespaces proxy URL
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.app.github.dev",
+]
 
 
 # Application definition
